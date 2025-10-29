@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Dragon City Library - Dragon City Tools</title>
+  <link rel="icon" type="image/png" href="https://dci-static-s1.socialpointgames.com/static/dragoncity/mobile/ui/dragons/ui_3400_dragon_tidalarmored_1@2x.png">
+  <meta name="description" content="Browse all Dragon's skins and images safely—no ads or interruptions!">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="title">
+    <img src="https://dci-static-s1.socialpointgames.com/static/dragoncity/mobile/ui/dragons/ui_3400_dragon_tidalarmored_1@2x.png" alt="Logo">
+    <h2>Dragon Library - Dragon City Tools</h2>
+  </div>
+
+  <input type="text" id="search" placeholder="Enter Dragon Name..." onkeyup="filterDragons()">
+
+  <div class="dragon-list" id="dragonContainer">
+    <div class='dragon-item'>9900 - Autumn Dragon</div>
+    <div class='dragon-item'>???? - High Doom Priestess Dragon</div>
+    <div class='dragon-item'>???? - Doom Drummer Dragon</div>
+    <div class='dragon-item'>3419 - The Herald Dragon</div>
+    <div class='dragon-item'>3418 - Scorched Ski Dragon</div>
+    <div class='dragon-item'>3417 - Whiteout Dragon</div>
+    <div class='dragon-item'>3416 - Gratitude Dragon</div>
+    <div class='dragon-item'>3415 - Snowscape Dragon</div>
+    <div class='dragon-item'>3414 - High Blackfall Dragon</div>
+    <div class='dragon-item'>3413 - Fall Flower</div>
+    <div class='dragon-item'>3410 - Plagued Pal Dragon</div>
+    <div class='dragon-item'>3409 - Bandaged Dragon</div>
+    <div class='dragon-item'>3408 - Lycanthrope Dragon</div>
+    <div class='dragon-item'>3407 - Abomination Dragon</div>
+    <div class='dragon-item'>3406 - Villainess Dragon</div>
+    <div class='dragon-item'>3405 - High Flight Armored Dragon</div>
+    <div class='dragon-item'>3404 - Shimmer Armored Dragon</div>
+    <div class='dragon-item'>3403 - Cryo Armored Dragon</div>
+    <div class='dragon-item'>3402 - High Civil Armored Dragon</div>
+  </div>
+
+  <div id="dragonModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal()">×</span>
+      <div id="dragonImages"></div>
+    </div>
+  </div>
+
+  <audio id="bgMusic" loop autoplay>
+    <source src="https://dci-static-s1.socialpointgames.com/static/dragoncity/mobile/sounds/music/107_audio_nw_maintheme.mp3" type="audio/mpeg">
+  </audio>
+
+  <script src="script.js"></script>
+</body>
+</html>
