@@ -1,12 +1,33 @@
 function generateNameVariants(name) {
-  let base = name.toLowerCase().replace(/[^a-z0-9]/g, "");
-  let variants = [base];
-  const words = name.toLowerCase().split(/\s+/);
+  const clean = str => str.toLowerCase().replace(/[^a-z0-9]/g, "");
+  const lower = name.toLowerCase();
+  const words = lower.split(/\s+/);
+  const variants = new Set();
+
+  // Original working ones (keeps all old dragons working)
+  variants.add(clean(lower));
   if (words.length > 1) {
-    variants.push(words.slice(1).join("").replace(/[^a-z0-9]/g, ""));
-    variants.push(words[words.length - 1].replace(/[^a-z0-9]/g, ""));
+    variants.add(words.slice(1).join(""));
+    variants.add(clean(words[words.length - 1]));
   }
-  return [...new Set(variants)];
+
+  // NEW: Fix for High Risen, High Marauder, High Realm, etc.
+  if (lower.includes("high")) {
+    const highIdx = words.indexOf("high");
+    if (highIdx !== -1 && highIdx + 1 < words.length) {
+      let parts = words.slice(highIdx + 1);
+      if (parts[parts.length - 1] === "dragon") parts = parts.slice(0, -1);
+
+      variants.add(parts.join(""));   // highrisenice
+      variants.add(parts.join("_"));  // high_risen_ice  ← THIS FIXES YOUR PROBLEM
+    }
+  }
+
+  // Extra safe fallbacks
+  variants.add(lower.replace(/\s+/g, ""));
+  variants.add(lower.replace(/\s+/g, "_"));
+
+  return [...variants];
 }
 
 function showDragonImages(code, name) {
@@ -73,3 +94,4 @@ document.addEventListener("click", () => {
   const bgMusic = document.getElementById("bgMusic");
   bgMusic.play().catch(() => {});
 }, { once: true });
+
