@@ -33,95 +33,100 @@ function generateNameVariants(name) {
 function showDragonImages(code, name) {
   const baseUrl = "https://dci-static-s1.socialpointgames.com/static/dragoncity/mobile/ui/dragons/";
   const fallbackUrl = "https://www.socialpointgames.com/static/dragoncity/mobile/ui/dragons/ui_2191_dragon_default_3@2x.png";
-  
+
   const versions = [0, 1, 2, 3];
   const skins = ["", "_skin1", "_skin2", "_skin3"];
   const container = document.getElementById("dragonImages");
   container.innerHTML = "";
-
-  if (code === "9900") code = "2684"; // Autumn fix
+  if (code === "9900") code = "2684";
 
   const variants = generateNameVariants(name);
-
   let totalAttempts = 0;
   let loadedCount = 0;
+  let firstValidImageUrl = null;
 
-  // Count how many images we're trying to load
-  versions.forEach(v => {
-    skins.forEach(skin => {
-      if (skin !== "" && v !== 3) return;
-      totalAttempts += variants.length;
-    });
-  });
+  // Count attempts
+  versions.forEach(v => skins.forEach(skin => { if (skin !== "" && v !== 3) return; totalAttempts += variants.length; }));
 
-  // If zero attempts somehow (should never happen), show fallback immediately
-  if (totalAttempts === 0) {
-    showFallback();
-    return;
-  }
+  if (totalAttempts === 0) { showFallback(); openModal(); return; }
 
-  // Try loading all possible images
   versions.forEach(v => {
     skins.forEach(skin => {
       if (skin !== "" && v !== 3) return;
 
       variants.forEach(variant => {
+        const fullUrl = `${baseUrl}ui_${code}_dragon_${variant}${skin}_${v}@2x.png`;
         const img = document.createElement("img");
-        img.src = `${baseUrl}ui_${code}_dragon_${variant}${skin}_${v}@2x.png`;
+        img.src = fullUrl;
 
         img.onload = () => {
           loadedCount++;
           container.appendChild(img);
-          checkIfAllFailed(); // in case some load later
+          if (!firstValidImageUrl) {
+            firstValidImageUrl = fullUrl;
+            addDownloadButton(firstValidImageUrl, name);
+          }
+          checkIfDone();
         };
 
         img.onerror = () => {
-          img.remove();
           loadedCount++;
-          checkIfAllFailed();
+          checkIfDone();
         };
       });
     });
   });
 
-  // This function checks: if all images failed → show fallback
-  function checkIfAllFailed() {
-    if (loadedCount >= totalAttempts) {
-      // After everything tried and failed
-      if (container.children.length === 0) {
-        showFallback();
-      }
-    }
+  function checkIfDone() {
+    if (loadedCount >= totalAttempts && container.children.length === 0) showFallback();
   }
 
   function showFallback() {
-    if (container.children.length > 0) return; // don't show if something already loaded
-
-    const fallbackImg = document.createElement("img");
-    fallbackImg.src = fallbackUrl;
-    fallbackImg.style.cssText = `
-      width: 220px;
-      height: 220px;
-      border-radius: 20%;
-      object-fit: cover;
-      background: #2a2a2a;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-    `;
-    fallbackImg.alt = "Dragon not found - Default Dragon";
-
-    // Optional: add a little text below
+    if (container.children.length > 0) return;
+    const img = document.createElement("img");
+    img.src = fallbackUrl;
+    img.style.cssText = "width:220px;height:220px;border-radius:20%;object-fit:cover;background:#2a2a2a;box-shadow:0 4px 10px rgba(0,0,0,0.5);";
     const text = document.createElement("div");
-    text.textContent = "Image not found :( Here's a cool dragon anyway!";
-    text.style.cssText = "margin-top: 15px; font-size: 14px; color: #888;";
-
-    container.appendChild(fallbackImg);
+    text.textContent = "Image not found :( Here's a cool dragon!";
+    text.style.cssText = "margin-top:15px;color:#888;font-size:14px;";
+    container.appendChild(img);
     container.appendChild(text);
   }
 
-  // Show modal
-  const modal = document.getElementById("dragonModal");
-  modal.style.display = "block";
-  setTimeout(() => modal.classList.add("show"), 10);
+  function addDownloadButton(imageUrl, dragonName) {
+    const old = document.getElementById("downloadDragonBtn");
+    if (old) old.remove();
+
+    const btn = document.createElement("button");
+    btn.id = "downloadDragonBtn";
+    btn.innerHTML = "Download This Dragon";
+    btn.style.cssText = `
+      margin:20px auto;padding:12px 28px;font-size:16px;background:#00d4aa;
+      color:black;border:none;border-radius:50px;cursor:pointer;display:block;
+      font-weight:bold;box-shadow:0 4px 15px rgba(0,212,170,0.4);transition:all .3s;
+    `;
+    btn.onmouseover = () => btn.style.transform = "scale(1.05)";
+    btn.onmouseout  = () => btn.style.transform = "scale(1)";
+
+    btn.onclick = () => {
+      fetch(imageUrl).then(r => r.blob()).then(blob => {
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = `${dragonName.replace(/[^a-z0-9]/gi, "_")}_Dragon.png`;
+        a.click();
+      });
+    };
+
+    container.appendChild(btn);
+  }
+
+  function openModal() {
+    const modal = document.getElementById("dragonModal");
+    modal.style.display = "block";
+    setTimeout(() => modal.classList.add("show"), 10);
+  }
+
+  openModal();
 }
 
 function closeModal() {
@@ -161,5 +166,6 @@ document.addEventListener("click", () => {
   const bgMusic = document.getElementById("bgMusic");
   bgMusic.play().catch(() => {});
 }, { once: true });
+
 
 
