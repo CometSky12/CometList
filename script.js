@@ -32,79 +32,30 @@ function generateNameVariants(name) {
 
 function showDragonImages(code, name) {
   const baseUrl = "https://dci-static-s1.socialpointgames.com/static/dragoncity/mobile/ui/dragons/";
-  const fallbackUrl = "https://www.socialpointgames.com/static/dragoncity/mobile/ui/dragons/ui_2191_dragon_default_3@2x.png";
-
+  const versions = [0, 1, 2, 3];
+  const skins = ["", "_skin1", "_skin2", "_skin3"];
   const container = document.getElementById("dragonImages");
   container.innerHTML = "";
-  if (code === "9900") code = "2684";
+  
+  if (code === "9900") code = "2684"; // Autumn fix
 
   const variants = generateNameVariants(name);
-  let anyImageLoaded = false;
 
-  // This exact order — you will love it
-  const order = [
-    { v: 0, skin: "" },        // Baby
-    { v: 1, skin: "" },        // Juvenile
-    { v: 2, skin: "" },        // Adult
-    { v: 3, skin: "" },        // Final form (normal)
-    { v: 3, skin: "_skin1" },  // Skin 1
-    { v: 3, skin: "_skin2" },  // Skin 2
-    { v: 3, skin: "_skin3" }   // Skin 3
-  ];
-
-  let totalExpected = order.length * variants.length;
-  let completed = 0;
-
-  order.forEach(({ v, skin }) => {
-    variants.forEach(variant => {
-      const url = `${baseUrl}ui_${code}_dragon_${variant}${skin}_${v}@2x.png`;
-      const img = document.createElement("img");
-
-      img.onload = () => {
-        img.style.cssText = "width:220px;height:220px;border-radius:20%;object-fit:cover;background:#2a2a2a;box-shadow:0 4px 10px rgba(0,0,0,0.5);margin:0 10px;";
+  versions.forEach(v => {
+    skins.forEach(skin => {
+      if (skin !== "" && v !== 3) return;
+      variants.forEach(variant => {
+        const img = document.createElement("img");
+        img.src = `${baseUrl}ui_${code}_dragon_${variant}${skin}_${v}@2x.png`;
+        img.onerror = () => img.remove();
         container.appendChild(img);
-        anyImageLoaded = true;
-        completed++;
-        if (completed === totalExpected) showModalIfReady();
-      };
-
-      img.onerror = () => {
-        completed++;
-        if (completed === totalExpected) showModalIfReady();
-      };
-
-      img.src = url;
+      });
     });
   });
 
-  function showModalIfReady() {
-    if (!anyImageLoaded) {
-      // Show fallback only if ZERO images loaded
-      const fallbackImg = document.createElement("img");
-      fallbackImg.src = fallbackUrl;
-      fallbackImg.style.cssText = "width:220px;height:220px;border-radius:20%;object-fit:cover;background:#2a2a2a;box-shadow:0 4px 10px rgba(0,0,0,0.5);";
-      const text = document.createElement("div");
-      text.textContent = "Image not found :( Here's a cool dragon anyway!";
-      text.style.cssText = "margin-top:15px;color:#888;font-size:14px;";
-      container.appendChild(fallbackImg);
-      container.appendChild(text);
-    }
-
-    const modal = document.getElementById("dragonModal");
-    modal.style.display = "block";
-    setTimeout(() => modal.classList.add("show"), 10);
-  }
-
-  // In case all images load instantly (very fast connection)
-  if (totalExpected === 0) {
-    const fallbackImg = document.createElement("img");
-    fallbackImg.src = fallbackUrl;
-    fallbackImg.style.cssText = "width:220px;height:220px;border-radius:20%;object-fit:cover;background:#2a2a2a;box-shadow:0 4px 10px rgba(0,0,0,0.5);";
-    container.appendChild(fallbackImg);
-    const modal = document.getElementById("dragonModal");
-    modal.style.display = "block";
-    setTimeout(() => modal.classList.add("show"), 10);
-  }
+  const modal = document.getElementById("dragonModal");
+  modal.style.display = "block";
+  setTimeout(() => modal.classList.add("show"), 10);
 }
 
 function closeModal() {
@@ -144,6 +95,7 @@ document.addEventListener("click", () => {
   const bgMusic = document.getElementById("bgMusic");
   bgMusic.play().catch(() => {});
 }, { once: true });
+
 
 
 
