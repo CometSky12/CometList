@@ -6,6 +6,9 @@ body {
   margin: 0;
 }
 
+/* ====================================
+   PC / DESKTOP STYLE (your original look)
+   ==================================== */
 #search {
   width: 60%;
   padding: 12px;
@@ -17,7 +20,7 @@ body {
   text-align: center;
   background: #000;
   color: #fff;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
 }
 
 .dragon-list {
@@ -34,6 +37,7 @@ body {
   cursor: pointer;
   transition: 0.3s;
 }
+
 .dragon-item:hover { background: #2a2a2a; transform: scale(1.02); }
 .dragon-item:active { transform: scale(0.95); }
 
@@ -44,6 +48,7 @@ body {
   gap: 10px;
   margin-top: 20px;
 }
+
 .title img { height: 40px; width: 40px; border-radius: 8px; }
 
 .modal {
@@ -51,12 +56,11 @@ body {
   position: fixed;
   z-index: 1000;
   inset: 0;
-  width: 100%;
-  height: 100%;
   background: rgba(0,0,0,0.85);
   opacity: 0;
   transition: opacity 0.4s ease;
 }
+
 .modal.show { display: block; opacity: 1; }
 
 .modal-content {
@@ -72,6 +76,7 @@ body {
   transform: scale(0.85);
   transition: transform 0.3s ease;
 }
+
 .modal.show .modal-content { transform: scale(1); }
 
 .close-btn {
@@ -81,10 +86,11 @@ body {
   font-size: 30px;
   cursor: pointer;
   color: #fff;
-  transition: 0.3s;
 }
+
 .close-btn:hover { color: #ff5555; }
 
+/* PC: your original horizontal scrolling gallery */
 #dragonImages {
   display: flex;
   overflow-x: auto;
@@ -92,18 +98,68 @@ body {
   padding: 20px 10px;
   scroll-behavior: smooth;
 }
+
 #dragonImages img {
   height: 220px;
   width: 220px;
   border-radius: 20%;
   object-fit: cover;
   background: #2a2a2a;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
   transition: transform 0.3s, box-shadow 0.3s;
   flex-shrink: 0;
 }
-#dragonImages img:hover { transform: scale(1.08); box-shadow: 0 6px 14px rgba(0, 0, 0, 0.7); }
+
+#dragonImages img:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.7);
+}
 
 #dragonImages::-webkit-scrollbar { height: 10px; }
 #dragonImages::-webkit-scrollbar-thumb { background: #444; border-radius: 10px; }
 #dragonImages::-webkit-scrollbar-track { background: #222; border-radius: 10px; }
+
+/* ====================================
+   MOBILE & TABLET ONLY — overrides the above when screen is small
+   ==================================== */
+@media (max-width: 1024px) {
+  #search {
+    width: 90%;
+    padding: 16px;
+    font-size: 18px;           /* stops iOS auto-zoom */
+  }
+
+  .dragon-item {
+    padding: 16px 18px;
+    font-size: 17px;
+  }
+
+  .title img { height: 50px; width: 50px; }
+
+  .close-btn {
+    font-size: 44px;
+    top: 8px;
+    right: 12px;
+  }
+
+  /* Switch from horizontal scroll → beautiful grid */
+  #dragonImages {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    overflow: visible;
+  }
+
+  #dragonImages img {
+    width: 100%;
+    height: auto;
+    max-width: 220px;
+    border-radius: 20px;
+    object-fit: contain;
+  }
+
+  /* Hide scrollbar completely on mobile */
+  #dragonImages::-webkit-scrollbar { display: none; }
+  #dragonImages { -ms-overflow-style: none; scrollbar-width: none; }
+}
