@@ -39,7 +39,7 @@ function showDragonImages(code, name) {
   const container = document.getElementById("dragonImages");
   container.innerHTML = "";
   
-  if (code === "9900") code = "2684"; // Autumn fix
+  if (code === "9900") code = "2684";
 
   const variants = generateNameVariants(name);
 
@@ -47,7 +47,7 @@ function showDragonImages(code, name) {
   let completed = 0;
   let anyLoaded = false;
 
-  // Count total images we're trying
+  // Count total attempts
   versions.forEach(v => {
     skins.forEach(skin => {
       if (skin !== "" && v !== 3) return;
@@ -55,14 +55,13 @@ function showDragonImages(code, name) {
     });
   });
 
-  // If somehow zero attempts → show fallback immediately
   if (totalAttempts === 0) {
     showFallback();
     openModal();
     return;
   }
 
-  // Try all images exactly like before
+  // Try every image exactly like your original code
   versions.forEach(v => {
     skins.forEach(skin => {
       if (skin !== "" && v !== 3) return;
@@ -74,28 +73,24 @@ function showDragonImages(code, name) {
           anyLoaded = true;
           container.appendChild(img);
           completed++;
-          checkDone();
+          if (completed === totalAttempts) finish();
         };
 
         img.onerror = () => {
           completed++;
-          checkDone();
+          if (completed === totalAttempts) finish();
         };
-      .
-
       });
     });
   });
 
-  function checkDone() {
-    if (completed >= totalAttempts) {
-      if (!anyLoaded) showFallback();
-      openModal();
-    }
+  function finish() {
+    if (!anyLoaded) showFallback();
+    openModal();
   }
 
   function showFallback() {
-    if (container.children.length > 0) return; // safety
+    if (container.children.length > 0) return;
 
     const img = document.createElement("img");
     img.src = fallbackUrl;
@@ -153,6 +148,7 @@ document.addEventListener("click", () => {
   const bgMusic = document.getElementById("bgMusic");
   bgMusic.play().catch(() => {});
 }, { once: true });
+
 
 
 
