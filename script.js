@@ -57,3 +57,50 @@ function showDragonImages(code, name) {
   modal.style.display = "block";
   setTimeout(() => modal.classList.add("show"), 10);
 }
+
+function closeModal() {
+  const modal = document.getElementById("dragonModal");
+  modal.classList.remove("show");
+  setTimeout(() => (modal.style.display = "none"), 400);
+}
+
+document.querySelectorAll(".dragon-item").forEach(item => {
+  item.addEventListener("click", () => {
+    const text = item.textContent.trim();
+    const match = text.match(/^(\d+)\s*-\s*(.+?)(?:\s*Dragon)?$/i);
+    if (match) {
+      const code = match[1];
+      const name = match[2];
+      showDragonImages(code, name);
+    }
+  });
+});
+
+function filterDragons() {
+  const input = document.getElementById("search").value.toLowerCase();
+  document.querySelectorAll(".dragon-item").forEach(item => {
+    if (input === "" || item.textContent.toLowerCase().includes(input)) {
+      item.style.display = "block";
+      item.classList.remove("hideDragon");
+      item.classList.add("showDragon");
+    } else {
+      item.classList.remove("showDragon");
+      item.classList.add("hideDragon");
+      setTimeout(() => (item.style.display = "none"), 400);
+    }
+  });
+}
+
+document.addEventListener("click", () => {
+  const bgMusic = document.getElementById("bgMusic");
+  bgMusic.play().catch(() => {});
+}, { once: true });
+
+
+
+
+
+
+
+
+
