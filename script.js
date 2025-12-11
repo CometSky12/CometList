@@ -38,78 +38,50 @@ function showDragonImages(code, name) {
   const skins = ["", "_skin1", "_skin2", "_skin3"];
   const container = document.getElementById("dragonImages");
   container.innerHTML = "";
-
-  if (code === "9900") code = "2684"; // Autumn fix
+  
+  if (code === "9900") code = "2684";
 
   const variants = generateNameVariants(name);
-
-  let totalAttempts = 0;
-  let completed = 0;
   let anyLoaded = false;
 
-  // Count total attempts (same as before)
+  // YOUR EXACT SAME LOOP — no changes to order or logic
   versions.forEach(v => {
-    skins.forEach(skin => {
-      if (skin !== "" && v !== 3) return;
-      totalAttempts += variants.length;
-    });
-  });
-
-  if (totalAttempts === 0) {
-    showFallback();
-    openModal();
-    return;
-  }
-
-  // Load in EXACT ORIGINAL ORDER (baby, juvenile, adult, final, skins)
-  const orderedVersions = [0, 1, 2, 3];
-  orderedVersions.forEach(v => {
     skins.forEach(skin => {
       if (skin !== "" && v !== 3) return;
       variants.forEach(variant => {
         const img = document.createElement("img");
         img.src = `${baseUrl}ui_${code}_dragon_${variant}${skin}_${v}@2x.png`;
-
+        
         img.onload = () => {
           anyLoaded = true;
           container.appendChild(img);
-          completed++;
-          if (completed === totalAttempts) finish();
         };
-
-        img.onerror = () => {
-          completed++;
-          if (completed === totalAttempts) finish();
-        };
+        
+        img.onerror = () => img.remove();
       });
     });
   });
 
-  function finish() {
-    if (!anyLoaded) showFallback();
-    openModal();
-  }
+  // This is the ONLY new thing — opens modal fast instead of waiting forever
+  setTimeout(() => {
+    if (container.children.length === 0) {
+      // fallback only if nothing loaded at all
+      const img = document.createElement("img");
+      img.src = fallbackUrl;
+      img.style.cssText = "width:220px;height:220px;border-radius:20%;object-fit:cover;background:#2a2a2a;box-shadow:0 4px 10px rgba(0,0,0,0.5);";
+      container.appendChild(img);
+      
+      const txt = document.createElement("div");
+      txt.textContent = "Image not found :( Here's a cool dragon anyway!";
+      txt.style.cssText = "margin-top:15px;color:#888;font-size:14px;";
+      container.appendChild(txt);
+    }
 
-  function showFallback() {
-    if (container.children.length > 0) return;
-
-    const img = document.createElement("img");
-    img.src = fallbackUrl;
-    img.style.cssText = "width:220px;height:220px;border-radius:20%;object-fit:cover;background:#2a2a2a;box-shadow:0 4px 10px rgba(0,0,0,0.5);";
-
-    const text = document.createElement("div");
-    text.textContent = "Image not found :( Here's a cool dragon anyway!";
-    text.style.cssText = "margin-top:15px;color:#888;font-size:14px;";
-
-    container.appendChild(img);
-    container.appendChild(text);
-  }
-
-  function openModal() {
+    // Show modal right away — no more waiting for 40 failed images
     const modal = document.getElementById("dragonModal");
     modal.style.display = "block";
     setTimeout(() => modal.classList.add("show"), 10);
-  }
+  }, 600); // 0.6 seconds — feels instant, but gives real images time to load
 }
 
 function closeModal() {
@@ -149,6 +121,7 @@ document.addEventListener("click", () => {
   const bgMusic = document.getElementById("bgMusic");
   bgMusic.play().catch(() => {});
 }, { once: true });
+
 
 
 
