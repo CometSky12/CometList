@@ -32,6 +32,8 @@ function generateNameVariants(name) {
 
 function showDragonImages(code, name) {
   const baseUrl = "https://dci-static-s1.socialpointgames.com/static/dragoncity/mobile/ui/dragons/";
+  const fallbackUrl = "https://www.socialpointgames.com/static/dragoncity/mobile/ui/dragons/ui_2191_dragon_default_3@2x.png";
+
   const versions = [0, 1, 2, 3];
   const skins = ["", "_skin1", "_skin2", "_skin3"];
   const container = document.getElementById("dragonImages");
@@ -41,21 +43,77 @@ function showDragonImages(code, name) {
 
   const variants = generateNameVariants(name);
 
+  let totalAttempts = 0;
+  let completed = 0;
+  let anyLoaded = false;
+
+  // Count total images we're trying
+  versions.forEach(v => {
+    skins.forEach(skin => {
+      if (skin !== "" && v !== 3) return;
+      totalAttempts += variants.length;
+    });
+  });
+
+  // If somehow zero attempts → show fallback immediately
+  if (totalAttempts === 0) {
+    showFallback();
+    openModal();
+    return;
+  }
+
+  // Try all images exactly like before
   versions.forEach(v => {
     skins.forEach(skin => {
       if (skin !== "" && v !== 3) return;
       variants.forEach(variant => {
         const img = document.createElement("img");
         img.src = `${baseUrl}ui_${code}_dragon_${variant}${skin}_${v}@2x.png`;
-        img.onerror = () => img.remove();
-        container.appendChild(img);
+
+        img.onload = () => {
+          anyLoaded = true;
+          container.appendChild(img);
+          completed++;
+          checkDone();
+        };
+
+        img.onerror = () => {
+          completed++;
+          checkDone();
+        };
+      .
+
       });
     });
   });
 
-  const modal = document.getElementById("dragonModal");
-  modal.style.display = "block";
-  setTimeout(() => modal.classList.add("show"), 10);
+  function checkDone() {
+    if (completed >= totalAttempts) {
+      if (!anyLoaded) showFallback();
+      openModal();
+    }
+  }
+
+  function showFallback() {
+    if (container.children.length > 0) return; // safety
+
+    const img = document.createElement("img");
+    img.src = fallbackUrl;
+    img.style.cssText = "width:220px;height:220px;border-radius:20%;object-fit:cover;background:#2a2a2a;box-shadow:0 4px 10px rgba(0,0,0,0.5);";
+
+    const text = document.createElement("div");
+    text.textContent = "Image not found :( Here's a cool dragon anyway!";
+    text.style.cssText = "margin-top:15px;color:#888;font-size:14px;";
+
+    container.appendChild(img);
+    container.appendChild(text);
+  }
+
+  function openModal() {
+    const modal = document.getElementById("dragonModal");
+    modal.style.display = "block";
+    setTimeout(() => modal.classList.add("show"), 10);
+  }
 }
 
 function closeModal() {
@@ -95,6 +153,7 @@ document.addEventListener("click", () => {
   const bgMusic = document.getElementById("bgMusic");
   bgMusic.play().catch(() => {});
 }, { once: true });
+
 
 
 
