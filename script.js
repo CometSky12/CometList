@@ -38,8 +38,8 @@ function showDragonImages(code, name) {
   const skins = ["", "_skin1", "_skin2", "_skin3"];
   const container = document.getElementById("dragonImages");
   container.innerHTML = "";
-  
-  if (code === "9900") code = "2684";
+
+  if (code === "9900") code = "2684"; // Autumn fix
 
   const variants = generateNameVariants(name);
 
@@ -47,7 +47,7 @@ function showDragonImages(code, name) {
   let completed = 0;
   let anyLoaded = false;
 
-  // Count total attempts
+  // Count total attempts (same as before)
   versions.forEach(v => {
     skins.forEach(skin => {
       if (skin !== "" && v !== 3) return;
@@ -61,8 +61,9 @@ function showDragonImages(code, name) {
     return;
   }
 
-  // Try every image exactly like your original code
-  versions.forEach(v => {
+  // Load in EXACT ORIGINAL ORDER (baby, juvenile, adult, final, skins)
+  const orderedVersions = [0, 1, 2, 3];
+  orderedVersions.forEach(v => {
     skins.forEach(skin => {
       if (skin !== "" && v !== 3) return;
       variants.forEach(variant => {
@@ -148,6 +149,7 @@ document.addEventListener("click", () => {
   const bgMusic = document.getElementById("bgMusic");
   bgMusic.play().catch(() => {});
 }, { once: true });
+
 
 
 
