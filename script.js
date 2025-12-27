@@ -51,7 +51,10 @@ function showDragonImages(code, name) {
     "2522": "envy",
     "2521": "gluttony",
     "2514": "wrath",
-    "2513": "pride"
+    "2513": "pride",
+    "3266": "beautheestrategist",
+    "1001": "fire_bird",
+    "1002": "mercurium"
   };
   
   const container = document.getElementById("dragonImages");
@@ -126,6 +129,7 @@ document.addEventListener("click", () => {
   const bgMusic = document.getElementById("bgMusic");
   bgMusic.play().catch(() => {});
 }, { once: true });
+
 
 
 
