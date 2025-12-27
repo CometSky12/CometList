@@ -33,26 +33,31 @@ function generateNameVariants(name) {
 function showDragonImages(code, name) {
   const baseUrl = "https://dci-static-s1.socialpointgames.com/static/dragoncity/mobile/ui/dragons/";
   const versions = [0, 1, 2, 3];
-  const skins = ["", "_skin1", "_skin2", "_skin3"];
+  const skins = ["", "_skin1", "_skin2", "_skin3", "_skin_1", "_skin_2", "_skin_3"];
+  // Extended to a-h to cover any possible alternate art versions (some legacy dragons use up to c/d, safe to go higher)
+  const suffixes = ["", "_a", "_b", "_c", "_d", "_e", "_f", "_g", "_h"];
   const container = document.getElementById("dragonImages");
   container.innerHTML = "";
-  
+ 
   if (code === "9900") code = "2684"; // Autumn fix
-
   const variants = generateNameVariants(name);
-
+  
   versions.forEach(v => {
-    skins.forEach(skin => {
-      if (skin !== "" && v !== 3) return;
-      variants.forEach(variant => {
-        const img = document.createElement("img");
-        img.src = `${baseUrl}ui_${code}_dragon_${variant}${skin}_${v}@2x.png`;
-        img.onerror = () => img.remove();
-        container.appendChild(img);
+    suffixes.forEach(suffix => {
+      skins.forEach(skin => {
+        // Skins only on adult (v=3), empty skin on all stages
+        if (skin !== "" && v !== 3) return;
+        
+        variants.forEach(variant => {
+          const img = document.createElement("img");
+          img.src = `${baseUrl}ui_${code}_dragon_${variant}${skin}${suffix}_${v}@2x.png`;
+          img.onerror = () => img.remove();
+          container.appendChild(img);
+        });
       });
     });
   });
-
+  
   const modal = document.getElementById("dragonModal");
   modal.style.display = "block";
   setTimeout(() => modal.classList.add("show"), 10);
@@ -95,6 +100,7 @@ document.addEventListener("click", () => {
   const bgMusic = document.getElementById("bgMusic");
   bgMusic.play().catch(() => {});
 }, { once: true });
+
 
 
 
