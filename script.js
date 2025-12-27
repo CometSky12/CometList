@@ -1,32 +1,40 @@
+// Also update generateNameVariants to handle "blood god vampire" better
 function generateNameVariants(name) {
   const clean = str => str.toLowerCase().replace(/[^a-z0-9]/g, "");
   const lower = name.toLowerCase();
   const words = lower.split(/\s+/);
   const variants = new Set();
-
+  
   // Original working ones
   variants.add(clean(lower));
   if (words.length > 1) {
     variants.add(words.slice(1).join(""));
     variants.add(clean(words[words.length - 1]));
   }
-
+  
   // THIS IS THE MAGIC THAT FIXED HIGH RISEN ICE AND ALL HIGH DRAGONS
   if (lower.includes("high")) {
     const highIdx = words.indexOf("high");
     if (highIdx !== -1 && highIdx + 1 < words.length) {
       let parts = words.slice(highIdx + 1);
       if (parts[parts.length - 1] === "dragon") parts = parts.slice(0, -1);
-
-      variants.add(parts.join(""));      // highrisenice
-      variants.add(parts.join("_"));     // high_risen_ice   ← THIS ONE FIXED IT
+      variants.add(parts.join("")); // highrisenice
+      variants.add(parts.join("_")); // high_risen_ice ← THIS ONE FIXED IT
     }
   }
-
+  
+  // NEW: Special handling for multi-word names like "blood god vampire"
+  // Try all possible camelCase combinations
+  if (words.length >= 3) {
+    variants.add(words.slice(0, 2).join("")); // bloodgod
+    variants.add(words.slice(0, -1).join("")); // bloodgodvampire (without "dragon")
+    variants.add(words.slice(-2).join("")); // godvampire
+    variants.add(words[0] + words.slice(1).join("")); // bloodgodvampire
+  }
+  
   // Extra safe fallbacks
   variants.add(lower.replace(/\s+/g, ""));
   variants.add(lower.replace(/\s+/g, "_"));
-
   return [...variants];
 }
 
@@ -34,13 +42,31 @@ function showDragonImages(code, name) {
   const baseUrl = "https://dci-static-s1.socialpointgames.com/static/dragoncity/mobile/ui/dragons/";
   const versions = [0, 1, 2, 3];
   const skins = ["", "_skin1", "_skin2", "_skin3", "_skin_1", "_skin_2", "_skin_3"];
-  // Extended to a-h to cover any possible alternate art versions (some legacy dragons use up to c/d, safe to go higher)
   const suffixes = ["", "_a", "_b", "_c", "_d", "_e", "_f", "_g", "_h"];
+  
+  // Special overrides for specific dragon codes
+  const codeOverrides = {
+    "2629": "greed",
+    "2523": "rulerofsins",
+    "2522": "envy",
+    "2521": "gluttony",
+    "2514": "wrath",
+    "2513": "pride"
+  };
+  
   const container = document.getElementById("dragonImages");
   container.innerHTML = "";
  
   if (code === "9900") code = "2684"; // Autumn fix
-  const variants = generateNameVariants(name);
+  
+  let variants;
+  if (codeOverrides[code]) {
+    // Use special override variant ONLY for these codes
+    variants = [codeOverrides[code]];
+  } else {
+    // Normal name variants for all other dragons
+    variants = generateNameVariants(name);
+  }
   
   versions.forEach(v => {
     suffixes.forEach(suffix => {
@@ -100,6 +126,7 @@ document.addEventListener("click", () => {
   const bgMusic = document.getElementById("bgMusic");
   bgMusic.play().catch(() => {});
 }, { once: true });
+
 
 
 
