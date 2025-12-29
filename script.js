@@ -54,13 +54,45 @@ function showDragonImages(code, name) {
     "2513": "pride",
     "3266": "beautheestrategist",
     "1001": "fire_bird",
-    "1002": "mercurium"
+    "1002": "mercurium",
+    "1004": "lantern",
+    "1028": "carnivore",
+    "1041": "legend",
+    "1044": "shit",
+    "1045": "vulcano",
+    "1053": "wind",
+    "1056": "chili",
+    "1063": "incandescent",
+    "1073": "earth_pure",
+    "1074": "fire_pure",
+    "1075": "water_pure",
+    "1076": "plant_pure",
+    "1077": "electric_pure",
+    "1078": "ice_pure",
+    "1079": "metal_pure",
+    "1080": "dark_pure",
+    "1085": "air",
+    "1093": "american",
+    "1104": "fireice",
+    "1130": "fire",
+    "1114": "cool_fire",
+    "1127": "st_patricks"
+    "1129": "hulk",
+    "1131": "fool",
+    "1135": "diamond",
+    "1139": "blue",
+    "1140": "angel",
+    "1142": "fire",
   };
   
   const container = document.getElementById("dragonImages");
   container.innerHTML = "";
  
   if (code === "9900") code = "2684"; // Autumn fix
+  if (code === "1033") code = "3140";
+  if (code === "1113") code = "1020";
+  if (code === "1114") code = "1023";
+  if (code === "1142") code = "1020";  
   
   let variants;
   if (codeOverrides[code]) {
@@ -129,6 +161,7 @@ document.addEventListener("click", () => {
   const bgMusic = document.getElementById("bgMusic");
   bgMusic.play().catch(() => {});
 }, { once: true });
+
 
 
 
