@@ -82,7 +82,7 @@ function showDragonImages(code, name) {
     "1135": "diamond",
     "1139": "blue",
     "1140": "angel",
-    "1142": "fire",
+    "1142": "fire"
   };
   
   const container = document.getElementById("dragonImages");
@@ -161,6 +161,7 @@ document.addEventListener("click", () => {
   const bgMusic = document.getElementById("bgMusic");
   bgMusic.play().catch(() => {});
 }, { once: true });
+
 
 
 
