@@ -76,7 +76,7 @@ function showDragonImages(code, name) {
     "1104": "fireice",
     "1130": "fire",
     "1114": "cool_fire",
-    "1127": "st_patricks"
+    "1127": "st_patricks",
     "1129": "hulk",
     "1131": "fool",
     "1135": "diamond",
@@ -161,6 +161,7 @@ document.addEventListener("click", () => {
   const bgMusic = document.getElementById("bgMusic");
   bgMusic.play().catch(() => {});
 }, { once: true });
+
 
 
 
