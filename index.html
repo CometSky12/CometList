@@ -14,6 +14,8 @@
       <h2>Dragon Library - Dragon City Tools</h2>
     </div>
     <input type="text" id="search" placeholder="Enter Dragon Name... ( Fuck You Lester )" onkeyup="filterDragons()">
+    <div id="search-status" class="search-status"></div>
+    <p id="no-results" class="no-results">No dragons match your search.</p>
     <div class="dragon-list" id="dragonContainer">
       <div class='dragon-item'>9900 - Autumn Dragon</div>
       <div class='dragon-item'>3462 - High Whisper Glider Dragon</div>
@@ -2215,16 +2217,23 @@
       <div class='dragon-item'>1001 - Firebird Dragon</div>
       <div class='dragon-item'>1000 - Nature Dragon</div>
     </div>
-    <div id="dragonModal" class="modal">
-      <div class="modal-content">
-        <span class="close-btn" onclick="closeModal()">×</span>
-        <div id="dragonImages"></div>
-      </div>
-    </div>
+<div id="dragonModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal()">×</span>
+    <div id="dragonImages"></div>
+  </div>
+
+  <!-- Button UNDER modal content -->
+  <button id="copyDragonLink" class="modal-action-btn">
+    Copy link
+  </button>
+</div>
+
     <audio id="bgMusic" loop autoplay>
       <source src="https://dci-static-s1.socialpointgames.com/static/dragoncity/mobile/sounds/music/107_audio_nw_maintheme.mp3" type="audio/mpeg">
     </audio>
     <script src="script.js"></script>
+    <button id="toTop" title="Back to top">↑</button>
   </body>
 </html>
 
