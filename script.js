@@ -1,3 +1,5 @@
+let currentDragonId = null;
+
 // Also update generateNameVariants to handle "blood god vampire" better
 function generateNameVariants(name) {
   const clean = str => str.toLowerCase().replace(/[^a-z0-9]/g, "");
@@ -121,6 +123,8 @@ function showDragonImages(code, name) {
     });
   });
   
+  currentDragonId = code;
+
   const modal = document.getElementById("dragonModal");
   modal.style.display = "block";
   setTimeout(() => modal.classList.add("show"), 10);
@@ -146,23 +150,81 @@ document.querySelectorAll(".dragon-item").forEach(item => {
 
 function filterDragons() {
   const input = document.getElementById("search").value.toLowerCase();
+  let visibleCount = 0; // ← ADD counter
+
   document.querySelectorAll(".dragon-item").forEach(item => {
     if (input === "" || item.textContent.toLowerCase().includes(input)) {
       item.style.display = "block";
       item.classList.remove("hideDragon");
       item.classList.add("showDragon");
+      visibleCount++; // ← COUNT visible dragons
     } else {
       item.classList.remove("showDragon");
       item.classList.add("hideDragon");
       setTimeout(() => (item.style.display = "none"), 400);
     }
   });
+
+  // 🔽 UPDATE SEARCH STATUS TEXT
+  document.getElementById("search-status").textContent =
+    `Showing ${visibleCount} dragons`;
+
+  // 🔽 SHOW / HIDE "NO RESULTS"
+  document.getElementById("no-results").style.display =
+    visibleCount === 0 ? "block" : "none";
 }
 
 document.addEventListener("click", () => {
   const bgMusic = document.getElementById("bgMusic");
   bgMusic.play().catch(() => {});
 }, { once: true });
+
+const toTopBtn = document.getElementById("toTop");
+
+window.addEventListener("scroll", () => {
+  if (!toTopBtn) return;
+  toTopBtn.style.display = window.scrollY > 300 ? "block" : "none";
+});
+
+toTopBtn?.addEventListener("click", () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+const copyBtn = document.getElementById("copyDragonLink");
+
+copyBtn?.addEventListener("click", () => {
+  if (!currentDragonId) return;
+
+  const link = `${location.origin}${location.pathname}?d=${currentDragonId}`;
+
+  navigator.clipboard.writeText(link).then(() => {
+    copyBtn.textContent = "Copied";
+    setTimeout(() => {
+      copyBtn.textContent = "Copy link";
+    }, 1200);
+  });
+});
+
+// 🔗 Deep link: ?d=DRAGON_ID → auto open modal
+window.addEventListener("load", () => {
+  const params = new URLSearchParams(window.location.search);
+  const dragonId = params.get("d");
+  if (!dragonId) return;
+
+  const items = document.querySelectorAll(".dragon-item");
+
+  for (const item of items) {
+    const text = item.textContent.trim();
+    const match = text.match(/^(\d+)\s*-\s*(.+?)(?:\s*Dragon)?$/i);
+
+    if (match && match[1] === dragonId) {
+      const code = match[1];
+      const name = match[2];
+      showDragonImages(code, name);
+      break;
+    }
+  }
+});
 
 
 
