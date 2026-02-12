@@ -1,52 +1,57 @@
 let currentDragonId = null;
 
-// Also update generateNameVariants to handle "blood god vampire" better
+/* ================================
+   NAME VARIANTS
+================================ */
+
 function generateNameVariants(name) {
   const clean = str => str.toLowerCase().replace(/[^a-z0-9]/g, "");
   const lower = name.toLowerCase();
   const words = lower.split(/\s+/);
   const variants = new Set();
-  
-  // Original working ones
+
   variants.add(clean(lower));
+
   if (words.length > 1) {
     variants.add(words.slice(1).join(""));
     variants.add(clean(words[words.length - 1]));
   }
-  
-  // THIS IS THE MAGIC THAT FIXED HIGH RISEN ICE AND ALL HIGH DRAGONS
+
   if (lower.includes("high")) {
     const highIdx = words.indexOf("high");
     if (highIdx !== -1 && highIdx + 1 < words.length) {
       let parts = words.slice(highIdx + 1);
       if (parts[parts.length - 1] === "dragon") parts = parts.slice(0, -1);
-      variants.add(parts.join("")); // highrisenice
-      variants.add(parts.join("_")); // high_risen_ice ← THIS ONE FIXED IT
+      variants.add(parts.join(""));
+      variants.add(parts.join("_"));
     }
   }
-  
-  // NEW: Special handling for multi-word names like "blood god vampire"
-  // Try all possible camelCase combinations
+
   if (words.length >= 3) {
-    variants.add(words.slice(0, 2).join("")); // bloodgod
-    variants.add(words.slice(0, -1).join("")); // bloodgodvampire (without "dragon")
-    variants.add(words.slice(-2).join("")); // godvampire
-    variants.add(words[0] + words.slice(1).join("")); // bloodgodvampire
+    variants.add(words.slice(0, 2).join(""));
+    variants.add(words.slice(0, -1).join(""));
+    variants.add(words.slice(-2).join(""));
+    variants.add(words[0] + words.slice(1).join(""));
   }
-  
-  // Extra safe fallbacks
+
   variants.add(lower.replace(/\s+/g, ""));
   variants.add(lower.replace(/\s+/g, "_"));
+
   return [...variants];
 }
 
+/* ================================
+   SHOW DRAGON IMAGES
+================================ */
+
 function showDragonImages(code, name) {
-  const baseUrl = "https://dci-static-s1.socialpointgames.com/static/dragoncity/mobile/ui/dragons/";
+  const baseUrl =
+    "https://dci-static-s1.socialpointgames.com/static/dragoncity/mobile/ui/dragons/";
+
   const versions = [0, 1, 2, 3];
   const skins = ["", "_skin1", "_skin2", "_skin3", "_skin_1", "_skin_2", "_skin_3"];
   const suffixes = ["", "_a", "_b", "_c", "_d", "_e", "_f", "_g", "_h"];
-  
-  // Special overrides for specific dragon codes
+
   const codeOverrides = {
     "2629": "greed",
     "2523": "rulerofsins",
@@ -88,31 +93,25 @@ function showDragonImages(code, name) {
     "3421": "highwar",
     "3447": "ghostofthepast"
   };
-  
+
   const container = document.getElementById("dragonImages");
   container.innerHTML = "";
- 
-  if (code === "9900") code = "2684"; // Autumn fix
+
+  if (code === "9900") code = "2684";
   if (code === "1033") code = "3140";
   if (code === "1113") code = "1020";
   if (code === "1114") code = "1023";
-  if (code === "1142") code = "1020";  
-  
-  let variants;
-  if (codeOverrides[code]) {
-    // Use special override variant ONLY for these codes
-    variants = [codeOverrides[code]];
-  } else {
-    // Normal name variants for all other dragons
-    variants = generateNameVariants(name);
-  }
-  
+  if (code === "1142") code = "1020";
+
+  let variants = codeOverrides[code]
+    ? [codeOverrides[code]]
+    : generateNameVariants(name);
+
   versions.forEach(v => {
     suffixes.forEach(suffix => {
       skins.forEach(skin => {
-        // Skins only on adult (v=3), empty skin on all stages
         if (skin !== "" && v !== 3) return;
-        
+
         variants.forEach(variant => {
           const img = document.createElement("img");
           img.src = `${baseUrl}ui_${code}_dragon_${variant}${skin}${suffix}_${v}@2x.png`;
@@ -122,7 +121,7 @@ function showDragonImages(code, name) {
       });
     });
   });
-  
+
   currentDragonId = code;
 
   const modal = document.getElementById("dragonModal");
@@ -136,48 +135,70 @@ function closeModal() {
   setTimeout(() => (modal.style.display = "none"), 400);
 }
 
+/* ================================
+   CLICK DRAGON ITEMS
+================================ */
+
 document.querySelectorAll(".dragon-item").forEach(item => {
   item.addEventListener("click", () => {
     const text = item.textContent.trim();
     const match = text.match(/^(\d+)\s*-\s*(.+?)(?:\s*Dragon)?$/i);
     if (match) {
-      const code = match[1];
-      const name = match[2];
-      showDragonImages(code, name);
+      showDragonImages(match[1], match[2]);
     }
   });
 });
 
+/* ================================
+   SEARCH FILTER
+================================ */
+
 function filterDragons() {
   const input = document.getElementById("search").value.toLowerCase();
-  let visibleCount = 0; // ← ADD counter
+  let visibleCount = 0;
 
   document.querySelectorAll(".dragon-item").forEach(item => {
     if (input === "" || item.textContent.toLowerCase().includes(input)) {
       item.style.display = "block";
-      item.classList.remove("hideDragon");
-      item.classList.add("showDragon");
-      visibleCount++; // ← COUNT visible dragons
+      visibleCount++;
     } else {
-      item.classList.remove("showDragon");
-      item.classList.add("hideDragon");
-      setTimeout(() => (item.style.display = "none"), 400);
+      item.style.display = "none";
     }
   });
 
-  // 🔽 UPDATE SEARCH STATUS TEXT
   document.getElementById("search-status").textContent =
     `Showing ${visibleCount} dragons`;
 
-  // 🔽 SHOW / HIDE "NO RESULTS"
   document.getElementById("no-results").style.display =
     visibleCount === 0 ? "block" : "none";
 }
 
+/* ================================
+   MUSIC SYSTEM (Saved)
+================================ */
+
+const bgMusic = document.getElementById("bgMusic");
+
+window.addEventListener("DOMContentLoaded", () => {
+  const savedVolume = localStorage.getItem("musicVolume");
+  const savedMuted = localStorage.getItem("musicMuted");
+
+  if (savedVolume !== null) bgMusic.volume = parseFloat(savedVolume);
+  if (savedMuted !== null) bgMusic.muted = savedMuted === "true";
+});
+
+bgMusic.addEventListener("volumechange", () => {
+  localStorage.setItem("musicVolume", bgMusic.volume);
+  localStorage.setItem("musicMuted", bgMusic.muted);
+});
+
 document.addEventListener("click", () => {
-  const bgMusic = document.getElementById("bgMusic");
   bgMusic.play().catch(() => {});
 }, { once: true });
+
+/* ================================
+   SCROLL TO TOP
+================================ */
 
 const toTopBtn = document.getElementById("toTop");
 
@@ -190,12 +211,17 @@ toTopBtn?.addEventListener("click", () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
+/* ================================
+   COPY DRAGON LINK
+================================ */
+
 const copyBtn = document.getElementById("copyDragonLink");
 
 copyBtn?.addEventListener("click", () => {
   if (!currentDragonId) return;
 
-  const link = `${location.origin}${location.pathname}?d=${currentDragonId}`;
+  const link =
+    `${location.origin}${location.pathname}?d=${currentDragonId}`;
 
   navigator.clipboard.writeText(link).then(() => {
     copyBtn.textContent = "Copied";
@@ -205,7 +231,10 @@ copyBtn?.addEventListener("click", () => {
   });
 });
 
-// 🔗 Deep link: ?d=DRAGON_ID → auto open modal
+/* ================================
+   DEEP LINK AUTO OPEN
+================================ */
+
 window.addEventListener("load", () => {
   const params = new URLSearchParams(window.location.search);
   const dragonId = params.get("d");
@@ -218,27 +247,55 @@ window.addEventListener("load", () => {
     const match = text.match(/^(\d+)\s*-\s*(.+?)(?:\s*Dragon)?$/i);
 
     if (match && match[1] === dragonId) {
-      const code = match[1];
-      const name = match[2];
-      showDragonImages(code, name);
+      showDragonImages(match[1], match[2]);
       break;
     }
   }
 });
 
+/* ================================
+   MUSIC UI CONTROLS
+================================ */
 
+const muteBtn = document.getElementById("muteBtn");
+const volumeSlider = document.getElementById("volumeSlider");
+const volumeText = document.getElementById("volumeText");
 
+// Load saved settings visually
+window.addEventListener("DOMContentLoaded", () => {
+  const savedVolume = localStorage.getItem("musicVolume");
+  const savedMuted = localStorage.getItem("musicMuted");
 
+  if (savedVolume !== null) {
+    const volumePercent = Math.round(parseFloat(savedVolume) * 100);
+    volumeSlider.value = volumePercent;
+    volumeText.textContent = volumePercent + "%";
+  }
 
+  if (savedMuted === "true") {
+    muteBtn.textContent = "🔇";
+  }
+});
 
+// Volume slider change
+volumeSlider.addEventListener("input", () => {
+  const volume = volumeSlider.value / 100;
+  bgMusic.volume = volume;
+  volumeText.textContent = volumeSlider.value + "%";
 
+  if (volume > 0) {
+    bgMusic.muted = false;
+    muteBtn.textContent = "🔊";
+  }
+});
 
+// Mute button click
+muteBtn.addEventListener("click", () => {
+  bgMusic.muted = !bgMusic.muted;
 
-
-
-
-
-
-
-
-
+  if (bgMusic.muted) {
+    muteBtn.textContent = "🔇";
+  } else {
+    muteBtn.textContent = "🔊";
+  }
+});
