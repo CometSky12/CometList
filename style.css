@@ -155,3 +155,36 @@ body {
 .modal-action-btn:active {
   transform: scale(0.95);
 }
+
+.music-controls {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background: rgba(20, 20, 20, 0.85);
+  padding: 10px 14px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  z-index: 9999;
+}
+
+.music-controls button {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: white;
+}
+
+.music-controls input[type="range"] {
+  width: 100px;
+  cursor: pointer;
+}
+
+.music-controls span {
+  font-size: 14px;
+  color: white;
+}
