@@ -3,6 +3,11 @@ let currentDragonId = null;
 /* ================================
    NAME VARIANTS
 ================================ */
+if (!location.hostname.includes("vercel.app")) {
+  throw new Error("Unauthorized");
+}
+
+
 
 function generateNameVariants(name) {
   const clean = str => str.toLowerCase().replace(/[^a-z0-9]/g, "");
