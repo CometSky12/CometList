@@ -97,7 +97,7 @@ function showDragonImages(code, name) {
     "1142": "fire",
     "3421": "highwar",
     "3447": "ghostofthepast",
-    "3476": "apexofdawnreveal1"
+    "3476": "apexofdawnreveal2"
   };
 
   const container = document.getElementById("dragonImages");
