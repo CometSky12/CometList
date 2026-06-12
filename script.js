@@ -547,3 +547,8 @@ clearBtn.onclick = () => {
     applyFilters();
 };
 filterContainer.appendChild(clearBtn);
+
+btn.innerHTML = `
+<img src="${dragonFamilies[familyName].icon}">
+<span>${familyName} (${dragonFamilies[familyName].ids.length})</span>
+`;
