@@ -277,3 +277,41 @@ body {
     background: #304a6b;
     border: 2px solid #4a90e2;
 }
+
+.family-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #0b1c34;
+    border-radius: 12px;
+    padding: 20px;
+    width: min(750px, 90vw);
+    z-index: 9999;
+}
+
+.family-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(auto-fill, minmax(55px, 1fr));
+    gap: 10px;
+}
+
+.family-icon-btn {
+    width: 55px;
+    height: 55px;
+    background: #24456a;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+.family-icon-btn img {
+    width: 36px;
+    height: 36px;
+}
+.family-icon-btn.active {
+    background: #6ee7ff;
+}
+.hidden {
+    display: none;
+}
