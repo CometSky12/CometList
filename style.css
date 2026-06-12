@@ -363,3 +363,39 @@ body {
 .family-icon-btn:hover img {
     transform: rotate(5deg);
 }
+
+.close-modal {
+    position: absolute;
+
+    top: 10px;
+    right: 10px;
+
+    width: 36px;
+    height: 36px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #24456a;
+
+    color: white;
+
+    cursor: pointer;
+
+    font-size: 18px;
+
+    transition: transform 0.15s ease;
+}
+
+.close-modal:hover {
+    transform: scale(1.1);
+}
+
+.close-modal:active {
+    transform: scale(0.9);
+}
+
+.family-modal {
+    max-height: 80vh;
+    overflow-y: auto;
+}
