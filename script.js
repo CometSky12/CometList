@@ -438,6 +438,34 @@ const dragonFamilies = {
   },
 };
 
+const activeFamilies = new Set();
+
+function getDragonFamily(id) {
+  for (const [familyName, familyData] of Object.entries(dragonFamilies)) {
+    if (familyData.ids.includes(Number(id))) {
+      return familyName;
+    }
+  }
+  return null;
+}
+
+function applyFilters() {
+  document.querySelectorAll(".dragon-item").forEach(item => {
+    const match = item.textContent.match(/^(\d+)/);
+    if (!match) return;
+    const dragonId = Number(match[1]);
+    const family = getDragonFamily(dragonId);
+    if (activeFamilies.size === 0) {
+      item.style.display = "";
+      return;
+    }
+    item.style.display =
+      activeFamilies.has(family)
+        ? ""
+        : "none";
+  });
+}
+
 function getFamilyIcon(dragonId) {
   for (const family of Object.values(dragonFamilies)) {
     if (family.ids.includes(Number(dragonId))) {
@@ -465,3 +493,38 @@ window.addEventListener("DOMContentLoaded", () => {
     item.appendChild(icon);
   });
 });
+
+const filterContainer =
+  document.getElementById("familyFilters");
+for (const familyName in dragonFamilies) {
+  const btn = document.createElement("button");
+  btn.className = "family-btn";
+  const icon = document.createElement("img");
+  icon.src = dragonFamilies[familyName].icon;
+  const text = document.createElement("span");
+  text.textContent =
+    `${familyName} (${dragonFamilies[familyName].ids.length})`;
+  btn.appendChild(icon);
+  btn.appendChild(text);
+  btn.onclick = () => {
+    if (activeFamilies.has(familyName)) {
+      activeFamilies.delete(familyName);
+      btn.classList.remove("active");
+    } else {
+      activeFamilies.add(familyName);
+      btn.classList.add("active");
+    }
+    applyFilters();
+  };
+  filterContainer.appendChild(btn);
+}
+
+document.getElementById("clearFilters").onclick = () => {
+  activeFamilies.clear();
+  document
+    .querySelectorAll(".family-btn")
+    .forEach(btn =>
+      btn.classList.remove("active")
+    );
+  applyFilters();
+};
