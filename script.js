@@ -528,3 +528,27 @@ document.getElementById("clearFilters").onclick = () => {
     );
   applyFilters();
 };
+
+const toggleBtn =
+  document.getElementById("toggleFilters");
+
+const familyFilters =
+  document.getElementById("familyFilters");
+
+toggleBtn.onclick = () => {
+
+  familyFilters.classList.toggle("hidden");
+
+  if (familyFilters.classList.contains("hidden")) {
+
+    toggleBtn.textContent =
+      "🧬 Family Filters ▼";
+
+  } else {
+
+    toggleBtn.textContent =
+      "🧬 Family Filters ▲";
+
+  }
+
+};
