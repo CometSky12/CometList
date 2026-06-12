@@ -527,7 +527,6 @@ clearBtn.onclick = () => {
     applyFilters();
 };
 filterContainer.appendChild(clearBtn);
-}
 
 const toggleBtn =
   document.getElementById("toggleFilters");
@@ -543,15 +542,3 @@ toggleBtn.onclick = () => {
       "🧬 Family Filters ▲";
   }
 };
-
-const clearBtn = document.createElement("div");
-clearBtn.className = "dragon-item";
-clearBtn.innerHTML = "🗑️ Clear Filters";
-clearBtn.onclick = () => {
-    activeFamilies.clear();
-    document
-        .querySelectorAll(".active")
-        .forEach(btn => btn.classList.remove("active"));
-    applyFilters();
-};
-filterContainer.appendChild(clearBtn);
