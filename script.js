@@ -517,7 +517,7 @@ for (const familyName in dragonFamilies) {
 
 const clearBtn = document.createElement("button");
 clearBtn.className = "family-icon-btn";
-clearBtn.innerHTML = "https://t4.ftcdn.net/jpg/14/24/42/09/360_F_1424420973_U8mBuTr8X6764tBw4wEHRI3fQadKZiXm.jpg";
+clearBtn.innerHTML = "🗑️";
 clearBtn.title = "Clear Filters";
 clearBtn.onclick = () => {
     activeFamilies.clear();
