@@ -533,12 +533,15 @@ const toggleBtn =
 const familyModal =
   document.getElementById("familyModal");
 toggleBtn.onclick = () => {
-  familyModal.classList.toggle("hidden");
-  if (familyModal.classList.contains("hidden")) {
-    toggleBtn.textContent =
-      "🧬 Family Filters ▼";
-  } else {
-    toggleBtn.textContent =
-      "🧬 Family Filters ▲";
-  }
+    if (familyModal.classList.contains("show")) {
+        familyModal.classList.remove("show");
+        setTimeout(() => {
+            familyModal.classList.add("hidden");
+        }, 250);
+    } else {
+        familyModal.classList.remove("hidden");
+        requestAnimationFrame(() => {
+            familyModal.classList.add("show");
+        });
+    }
 };
