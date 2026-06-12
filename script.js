@@ -498,14 +498,16 @@ const filterContainer =
   document.getElementById("familyFilters");
 for (const familyName in dragonFamilies) {
   const btn = document.createElement("button");
-  btn.className = "family-btn";
+  btn.className = "dragon-item";
   const icon = document.createElement("img");
   icon.src = dragonFamilies[familyName].icon;
   const text = document.createElement("span");
   text.textContent =
     `${familyName} (${dragonFamilies[familyName].ids.length})`;
-  btn.appendChild(icon);
-  btn.appendChild(text);
+  btn.innerHTML = `
+  <img src="${dragonFamilies[familyName].icon}" width="24">
+  ${familyName} (${dragonFamilies[familyName].ids.length})
+`;
   btn.onclick = () => {
     if (activeFamilies.has(familyName)) {
       activeFamilies.delete(familyName);
@@ -531,24 +533,20 @@ document.getElementById("clearFilters").onclick = () => {
 
 const toggleBtn =
   document.getElementById("toggleFilters");
-
 const familyFilters =
   document.getElementById("familyFilters");
-
 toggleBtn.onclick = () => {
-
   familyFilters.classList.toggle("hidden");
-
   if (familyFilters.classList.contains("hidden")) {
-
     toggleBtn.textContent =
       "🧬 Family Filters ▼";
-
   } else {
-
     toggleBtn.textContent =
       "🧬 Family Filters ▲";
-
   }
-
 };
+
+const clearBtn = document.createElement("div");
+clearBtn.className = "dragon-item";
+clearBtn.textContent = "🗑️ Clear Filters";
+familyFilters.appendChild(clearBtn);
