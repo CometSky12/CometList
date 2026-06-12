@@ -534,7 +534,7 @@ const familyModal =
   document.getElementById("familyModal");
 toggleBtn.onclick = () => {
   familyModal.classList.toggle("hidden");
-  if (familyFilters.classList.contains("hidden")) {
+  if (familyModal.classList.contains("hidden")) {
     toggleBtn.textContent =
       "🧬 Family Filters ▼";
   } else {
