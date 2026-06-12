@@ -305,3 +305,163 @@ muteBtn.addEventListener("click", () => {
     muteBtn.textContent = "🔊";
   }
 });
+
+const dragonFamilies = {
+  Void: {
+    icon: "https://www.ditlep.com/Content/Images/Family/dc-ui-family-insignia_void.png",
+    ids: [3468, 3469, 3470, 3471, 3472, 3473]
+  },
+
+  Astro: {
+    icon: "https://www.ditlep.com/Content/Images/Family/dc-ui-family-insignia_astro.png",
+    ids: [3456, 3457, 3458, 3459, 3460, 3461]
+  },
+
+  Risen: {
+    icon: "https://www.ditlep.com/Content/Images/Family/gr-family-badge-risen.png"
+    ids: [3304, 3397, 3438, 3451, 3463, 3467]
+  },
+
+  Apocalypse: {
+    icon: "https://www.ditlep.com/Content/Images/Family/gr-family-badge-apocalypse.png"
+    ids: [3419, 3420, 3421, 3448, 3449, 3450]
+  },
+
+  Doom: {
+    icon: "https://www.ditlep.com/Content/Images/Family/gr-family-badge-doom.png"
+    ids: [3422, 3423, 3424, 3425, 3426, 3427]
+  },
+
+  Armored: {
+    icon: "https://www.ditlep.com/Content/Images/Family/gr-family-badge-armor.png"
+    ids: [3400, 3401, 3402, 3403, 3404, 3405]
+  },
+
+  Critical: {
+    icon: "https://www.ditlep.com/Content/Images/Family/gr-family-badge-critical.png"
+    ids: [3373, 3374, 3376, 3380, 3381]
+  },
+
+  Silencer: {
+    icon: "https://www.ditlep.com/Content/Images/Family/icon-silencer.png"
+    ids: [3336, 3337, 3338, 3339, 3340, 3341, 3399]
+  },
+
+  Evader: {
+    icon: "https://www.ditlep.com/Content/Images/Family/gr-family-badge-evader.png"
+    ids: [3268, 3269, 3270, 3271, 3272, 3283]
+  },
+
+  Strategist: {
+    icon: "https://www.ditlep.com/Content/Images/Family/icon-strategist.png"
+    ids: [3263, 3264, 3265, 3266, 3267, 3273]
+  },
+
+  Extractor: {
+    icon: "https://www.ditlep.com/Content/Images/Family/gr-family-badge-extractor.png"
+    ids: [3241, 3242, 3244, 3245, 3270, 3278]
+  },
+
+  Spiked: {
+    icon: "https://www.ditlep.com/Content/Images/Family/icon-spikes.png"
+    ids: [3236, 3237, 3238, 3239, 3240, 3246]
+  },
+
+  Guard: {
+    icon: "https://www.ditlep.com/Content/Images/Family/gr-family-badge-guard.png"
+    ids: [3166, 3167, 3187, 3188, 3243]
+  },
+
+  Berserker: {
+    icon: "https://www.ditlep.com/Content/Images/Family/gr-family-badge-berserker.png"
+    ids: [3161, 3162, 3163, 3164, 3165, 3189]
+  },
+
+  Quantum: {
+    icon: "https://www.ditlep.com/Content/Images/Family/gr-family-badge-quantum.png"
+    ids: [3143, 3144, 3146, 3147, 3168]
+  },
+
+  Plasma: {
+    icon: "https://www.ditlep.com/Content/Images/Family/icon-plasma.png"
+    ids: [3148, 3156, 3157, 3158, 3159, 3160]
+  },
+
+  Arcana: {
+    icon: "https://www.ditlep.com/Content/Images/Family/gr-family-badge-arcana.png"
+    ids: [3025, 3039, 3053, 3067, 3095, 3123, 3137, 3141, 3145]
+  },
+
+  Eternal: {
+    icon: "https://www.ditlep.com/Content/Images/Family/icon-eternal.png"
+    ids: [3026, 3040, 3054, 3068, 3082, 3096, 3110, 3124, 3138, 3142, 3155]
+  },
+
+  TWD: {
+    icon: "https://www.ditlep.com/Content/Images/Family/icon-twd.png"
+    ids: [2955, 2969, 2970, 2984, 2998, 3012]
+  },
+
+  Dual: {
+    icon: "https://www.ditlep.com/Content/Images/Family/icon-dual.png"
+    ids: [2927, 2941]
+  },
+
+  Redemption: {
+    icon: "https://www.ditlep.com/Content/Images/Family/gr-family-badge-redemption.png"
+    ids: [2832, 2890, 2926, 2940, 2954, 2968, 2983, 2997, 3109]
+  },
+
+  Karma: {
+    icon: "https://www.ditlep.com/Content/Images/Family/icon4.png"
+    ids: [2785, 2802, 2819, 2836, 2837, 2854, 2871, 2888, 2905, 2906, 3011]
+  },
+
+  Ascended: {
+    icon: "https://www.ditlep.com/Content/Images/Family/gr-family-badge-ascended.png"
+    ids: [2797, 2814, 2831, 2849, 2907, 2909, 2910, 2911, 3081]
+  },
+
+  Corrupted: {
+    icon: "https://www.ditlep.com/Content/Images/Family/gr-family-badge-corrupted.png"
+    ids: [2661, 2678, 2698, 2709, 2716, 2717, 2728, 2750, 2767, 2768, 2901]
+  },
+
+  Vampire: {
+    icon: "https://www.ditlep.com/Content/Images/Family/icon2.png"
+    ids: [2513, 2514, 2521, 2522, 2523, 2572, 2607, 2612, 2629, 2644, 2788]
+  },
+
+  Titan: {
+    icon: "https://www.ditlep.com/Content/Images/Family/gr-family-badge-titans.png"
+    ids: [2379, 2380, 2381, 2462, 2463, 2484, 2487, 2488, 2605, 2736, 2737, 2738, 2739, 2740]
+  },
+};
+
+function getFamilyIcon(dragonId) {
+  for (const family of Object.values(dragonFamilies)) {
+    if (family.ids.includes(Number(dragonId))) {
+      return family.icon;
+    }
+  }
+  return null;
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".dragon-item").forEach(item => {
+
+    const match = item.textContent.match(/^(\d+)/);
+    if (!match) return;
+
+    const dragonId = match[1];
+    const iconUrl = getFamilyIcon(dragonId);
+
+    if (!iconUrl) return;
+
+    const icon = document.createElement("img");
+    icon.src = iconUrl;
+    icon.className = "family-icon";
+
+    item.appendChild(icon);
+  });
+});
