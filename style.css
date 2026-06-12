@@ -197,3 +197,43 @@ body {
   border-radius: 50%;
   object-fit: cover;
 }
+
+.family-filters {
+  max-width: 420px;
+  margin: 0 auto 15px;
+}
+
+.family-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 12px 15px;
+  margin: 6px 0;
+
+  border: none;
+  border-radius: 12px;
+
+  background: #1c1c1c;
+  color: white;
+
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.family-btn:hover {
+  background: #2a2a2a;
+  transform: scale(1.02);
+}
+
+.family-btn.active {
+  background: #304a6b;
+}
+
+.family-btn img {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+}
