@@ -521,16 +521,6 @@ for (const familyName in dragonFamilies) {
   filterContainer.appendChild(btn);
 }
 
-document.getElementById("clearFilters").onclick = () => {
-  activeFamilies.clear();
-  document
-    .querySelectorAll(".family-btn")
-    .forEach(btn =>
-      btn.classList.remove("active")
-    );
-  applyFilters();
-};
-
 const toggleBtn =
   document.getElementById("toggleFilters");
 const familyFilters =
@@ -548,5 +538,12 @@ toggleBtn.onclick = () => {
 
 const clearBtn = document.createElement("div");
 clearBtn.className = "dragon-item";
-clearBtn.textContent = "🗑️ Clear Filters";
-familyFilters.appendChild(clearBtn);
+clearBtn.innerHTML = "🗑️ Clear Filters";
+clearBtn.onclick = () => {
+    activeFamilies.clear();
+    document
+        .querySelectorAll(".active")
+        .forEach(btn => btn.classList.remove("active"));
+    applyFilters();
+};
+filterContainer.appendChild(clearBtn);
