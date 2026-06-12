@@ -545,3 +545,16 @@ toggleBtn.onclick = () => {
         });
     }
 };
+
+const closeFamilyModal =
+  document.getElementById("closeFamilyModal");
+
+closeFamilyModal.onclick = () => {
+
+    familyModal.classList.remove("show");
+
+    setTimeout(() => {
+        familyModal.classList.add("hidden");
+    }, 250);
+
+};
