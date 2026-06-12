@@ -354,7 +354,7 @@ const dragonFamilies = {
 
   Strategist: {
     icon: "https://www.ditlep.com/Content/Images/Family/icon-strategist.png",
-    ids: [3263,3264,3265.3266,3267,3273]
+    ids: [3263,3264,3265,3266,3267,3273]
   },
 
   Extractor: {
@@ -369,7 +369,7 @@ const dragonFamilies = {
 
   Guard: {
     icon: "https://www.ditlep.com/Content/Images/Family/gr-family-badge-guard.png",
-    ids: [3166.3167,3187,3188,3243]
+    ids: [3166,3167,3187,3188,3243]
   },
 
   Berserker: {
@@ -497,36 +497,44 @@ window.addEventListener("DOMContentLoaded", () => {
 const filterContainer =
   document.getElementById("familyFilters");
 for (const familyName in dragonFamilies) {
-  const btn = document.createElement("button");
-  btn.className = "dragon-item";
-  const icon = document.createElement("img");
-  icon.src = dragonFamilies[familyName].icon;
-  const text = document.createElement("span");
-  text.textContent =
-    `${familyName} (${dragonFamilies[familyName].ids.length})`;
-  btn.innerHTML = `
-  <img src="${dragonFamilies[familyName].icon}" width="24">
-  ${familyName} (${dragonFamilies[familyName].ids.length})
-`;
-  btn.onclick = () => {
-    if (activeFamilies.has(familyName)) {
-      activeFamilies.delete(familyName);
-      btn.classList.remove("active");
-    } else {
-      activeFamilies.add(familyName);
-      btn.classList.add("active");
-    }
+    const btn = document.createElement("button");
+    btn.className = "family-icon-btn";
+    btn.innerHTML =
+      `<img src="${dragonFamilies[familyName].icon}">`;
+    btn.title = familyName;
+    btn.onclick = () => {
+        if (activeFamilies.has(familyName)) {
+            activeFamilies.delete(familyName);
+            btn.classList.remove("active");
+        } else {
+            activeFamilies.add(familyName);
+            btn.classList.add("active");
+        }
+        applyFilters();
+    };
+    filterContainer.appendChild(btn);
+}
+
+const clearBtn = document.createElement("button");
+clearBtn.className = "family-icon-btn";
+clearBtn.innerHTML = "🗑️";
+clearBtn.title = "Clear Filters";
+clearBtn.onclick = () => {
+    activeFamilies.clear();
+    document
+      .querySelectorAll(".family-icon-btn.active")
+      .forEach(btn => btn.classList.remove("active"));
     applyFilters();
-  };
-  filterContainer.appendChild(btn);
+};
+filterContainer.appendChild(clearBtn);
 }
 
 const toggleBtn =
   document.getElementById("toggleFilters");
-const familyFilters =
-  document.getElementById("familyFilters");
+const familyModal =
+  document.getElementById("familyModal");
 toggleBtn.onclick = () => {
-  familyFilters.classList.toggle("hidden");
+  familyModal.classList.toggle("hidden");
   if (familyFilters.classList.contains("hidden")) {
     toggleBtn.textContent =
       "🧬 Family Filters ▼";
@@ -547,8 +555,3 @@ clearBtn.onclick = () => {
     applyFilters();
 };
 filterContainer.appendChild(clearBtn);
-
-btn.innerHTML = `
-<img src="${dragonFamilies[familyName].icon}">
-<span>${familyName} (${dragonFamilies[familyName].ids.length})</span>
-`;
