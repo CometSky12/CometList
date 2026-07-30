@@ -431,6 +431,11 @@ const dragonFamilies = {
     ids: [2513,2514,2521,2522,2523,2572,2607,2612,2629,2644,2788]
   },
 
+  Stained: {
+    icon: "https://cdn.discordapp.com/emojis/1521486230821404712.webp",
+    ids: [3491,3492,3493,3494,3495,3496]
+  },
+
   Titan: {
     icon: "https://www.ditlep.com/Content/Images/Family/gr-family-badge-titans.png",
     ids: [2379,2380,2381,2462,2463,2484,2487,2488,2605,2736,2737,2738,2739,2740]
