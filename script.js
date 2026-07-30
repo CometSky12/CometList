@@ -306,6 +306,11 @@ muteBtn.addEventListener("click", () => {
 });
 
 const dragonFamilies = {
+  Stained: {
+    icon: "https://cdn.discordapp.com/emojis/1521486230821404712.webp",
+    ids: [3491,3492,3493,3494,3495,3496]
+  },
+   
   Void: {
     icon: "https://www.ditlep.com/Content/Images/Family/dc-ui-family-insignia_void.png",
     ids: [3468,3469,3470,3471,3472,3473]
@@ -429,11 +434,6 @@ const dragonFamilies = {
   Vampire: {
     icon: "https://www.ditlep.com/Content/Images/Family/icon2.png",
     ids: [2513,2514,2521,2522,2523,2572,2607,2612,2629,2644,2788]
-  },
-
-  Stained: {
-    icon: "https://cdn.discordapp.com/emojis/1521486230821404712.webp",
-    ids: [3491,3492,3493,3494,3495,3496]
   },
 
   Titan: {
